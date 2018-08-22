@@ -1,2 +1,11 @@
 ---
 # tasks file for AnsibleRoleRaspberryPiExpandFileSystem
+- name: Check that filesystem is correctly partitioned
+  shell: /usr/sbin/parted /dev/mmcblk0 unit gb print free | grep 'Free Space' | tail -n1 | awk '{print $3}'
+  register: partitionstatus
+
+- name: Resize file system to underlying SD card
+  commnad: raspi-config --expand-rootfs
+  when: partitionstatus.stdout != "0.00GB"
+  notify:
+      - RaspberryPiRestart

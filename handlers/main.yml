@@ -1,2 +1,4 @@
 ---
 # handlers file for AnsibleRoleRaspberryPiExpandFileSystem
+- name: RaspberryPiRestart
+  command: reboot
